@@ -1,15 +1,16 @@
+import { revalidateRedirects } from '@/hooks/revalidateRedirects'
+import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { searchFields } from '@/search/fieldOverrides'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
-import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
-import { Plugin } from 'payload'
-import { revalidateRedirects } from '@/hooks/revalidateRedirects'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
-import { searchFields } from '@/search/fieldOverrides'
-import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { s3Storage } from '@payloadcms/storage-s3'
+import { Plugin } from 'payload'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -70,7 +71,7 @@ export const plugins: Plugin[] = [
                   return [
                     ...rootFeatures,
                     FixedToolbarFeature(),
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
                   ]
                 },
               }),
@@ -91,4 +92,19 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadCloudPlugin(),
+  s3Storage({
+    collections: {
+      media: true,
+    },
+    bucket: process.env.S3_BUCKET,
+    config: {
+      endpoint: process.env.S3_ENDPOINT,
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+      },
+      // region: process.env.S3_REGION,
+      // ... Other S3 configuration
+    },
+  }),
 ]
