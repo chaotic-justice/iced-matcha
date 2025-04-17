@@ -1,7 +1,7 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 
 import path from 'path'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { buildConfig, PayloadRequest } from 'payload'
 import sharp from 'sharp' // sharp-import
 import { fileURLToPath } from 'url'
@@ -59,6 +59,11 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
+  email: resendAdapter({
+    defaultFromAddress: 'shu.kagift@gmail.com',
+    defaultFromName: 'Author Shukagi',
+    apiKey: process.env.RESEND_API,
+  }),
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
