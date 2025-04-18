@@ -16,7 +16,10 @@
     "lint:fix": "cross-env NODE_OPTIONS=--no-deprecation next lint --fix",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
-    "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "preview": "opennextjs-cloudflare && wrangler dev",
+    "deploy": "opennextjs-cloudflare && wrangler deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@payloadcms/admin-bar": "latest",
@@ -56,6 +59,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@opennextjs/cloudflare": "^1.0.0-beta.3",
     "@tailwindcss/typography": "^0.5.13",
     "@types/escape-html": "^1.0.2",
     "@types/node": "22.5.4",
@@ -68,7 +72,8 @@
     "postcss": "^8.4.38",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.3",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "wrangler": "^4.12.0"
   },
   "packageManager": "pnpm@10.3.0",
   "engines": {
